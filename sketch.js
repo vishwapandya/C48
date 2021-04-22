@@ -1,8 +1,8 @@
 var PLAY = 1;
 var END = 0;
-var SERVE;
+//var SERVE;
 var gameState = PLAY;
-var cloud,cloudImg,bird,birdImage,button,buttonImg,trex,trexImg,getready,getreadyimage,gameover,gameOverImg,background,backImg
+var cloud,cloudImg,bird,birdImage,button,buttonImg,trex,trexImg,getready,getreadyimage,gameover,gameOverImg,bg,backImg
 var birdsGroup,cloudsGroup ;
 var Score=0;
 
@@ -18,9 +18,10 @@ function preload() {
 }
 
 function setup(){
-    var canvas = createCanvas(1500,700);
-    background = createSprite(0,0,1500,700);
-    background.addImage(backImg);
+    createCanvas(1200,400);
+    bg = createSprite(300,0,1200,700);
+    bg.addImage(backImg);
+    
     
     trex = createSprite(50,180,20,50);
     trex.addImage(trexImg);
@@ -36,58 +37,49 @@ function setup(){
     restart = createSprite(1205,300,1,1);
     restart.addImage(buttonImg);
     restart.scale=0.2
+    restart.visible=false;
 
     getready = createSprite(200,200);
     getready.addImage(getreadyimage);
-    getreadyimage.visible=false;
+    getready.visible=true;
 
     gameover = createSprite(200,200);
     gameover.addImage(gameOverImg);
-    gameOverImg.visible = false;
+    gameover.visible = false;
 
     birdsGroup = new Group();
     cloudsGroup = new Group();
 
-   
-  
-  
- 
-
-    
-
-    
 }
 
 function draw(){
-    if(gameState === PLAY)
-    {
-      getreadyimage.visible = true;
-      gameOverImg.visible = false;
-    }
+  background("black")
+    // if(gameState === PLAY)
+    // {
+    //   getreadyimage.visible = true;
+    //   //gameOverImg.visible = false;
+    // }
     if(keyDown(UP_ARROW))
     {
       gameState = PLAY;
-      trex.visible = true;
-      getreadyimage.visibe = false;
-      gameOverImg.visible = false;
+      //trex.visible = true;
+      getready.visible = false;
+      //gameOverImg.visible = false;
     }
     text("Score: "+ Score, 500,50);
   
   if (gameState===PLAY){
-    background.velocityX = -3;
-    if(background.x<0){
-      background.x = background.width/2;
+    bg.velocityX = -3;
+    if(bg.x<0){
+      bg.x = 600;
     }
-  gameOverImg.visible = false;
-    if(keyDown("space") ) {
+  //gameOverImg.visible = false;
+    if(keyDown("space")) {
       trex.velocityY = -12;
     }
   
     trex.velocityY = trex.velocityY + 0.8
   
-    
-  
-    
     spawnClouds();
     spawnBirds();
   
@@ -96,8 +88,8 @@ function draw(){
     }
   }
   else if (gameState === END) {
-   background.velocityX = 0;
-   gameoverImg.visible = true;
+   bg.velocityX = 0;
+   gameover.visible = true;
 
     restart.visible = true;
     
@@ -113,21 +105,25 @@ function draw(){
     if(mousePressedOver(restart)) {
       reset();
     }
-    drawSprites();
+
+    
 
 
+  }
+  drawSprites();
 }
+
 function reset(){
   gameState = PLAY;
  Score = 0;
- getreadyimage.visible = true;
- gameOverImg.visible = false;
+ getready.visible = true;
+ gameover.visible = false;
   restart.visible = false;
   
   birdsGroup.destroyEach();
   cloudsGroup.destroyEach();
-
 }
+
 function spawnClouds() {
   //write code here to spawn the clouds
   if (frameCount % 60 === 0) {
@@ -148,7 +144,7 @@ function spawnClouds() {
     cloudsGroup.add(cloud);
   }
 }
-}
+
 
 
 function spawnBirds() {
